@@ -5,6 +5,7 @@ using System.Collections;
 public class NumberWizard : MonoBehaviour {
 
 	public Text guessText;
+	public int maxGuesses = 5;
 	int max = 1000;
 	int min = 1;
 	int guess;
@@ -12,7 +13,6 @@ public class NumberWizard : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		NextGuess();
-		max++;
 	}
 	
 	public void GuessHigher() {
@@ -26,9 +26,11 @@ public class NumberWizard : MonoBehaviour {
 	}
 	
 	void NextGuess(){
-		//guess = (max+min)/2;
-		guess = Random.Range (min,max);
-		Debug.Log ("Guess: " + guess);
+		if(maxGuesses <= 0)
+			Application.LoadLevel("Lose Screen");
+		//Debug.Log(maxGuesses);
+		maxGuesses--;
+		guess = Random.Range (min,max+1);
 		guessText.text = guess.ToString();
 	}
 }
