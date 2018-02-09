@@ -10,11 +10,14 @@ public class MusicPlayer : MonoBehaviour {
 	// Game Patterns: http://gameprogrammingpatterns.com/
 	
 	void Awake () {
+		Debug.Log(this.GetInstanceID());
 		if (instance != null) {
 			Destroy(gameObject);
 			Debug.Log ("Duplicate music player self-destructing!");
+			Debug.Log(this.GetInstanceID());
 		} else {
 			instance = this;
+			this.audio.Play();
 			GameObject.DontDestroyOnLoad(gameObject);	
 		}
 	}
