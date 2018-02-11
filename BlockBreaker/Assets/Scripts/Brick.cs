@@ -30,7 +30,7 @@ public class Brick : MonoBehaviour {
 	void OnCollisionEnter2D (Collision2D c2d) {
 		// deja el sonido en un punto del espacio para que siga
 		// sonando incluso cuando el ladrillo es destruido.
-		AudioSource.PlayClipAtPoint(crack, transform.position, 0.1f);
+		AudioSource.PlayClipAtPoint(crack, transform.position, 0.02f);
 		if(isBreakable)
 			HandleHits();
 	}
