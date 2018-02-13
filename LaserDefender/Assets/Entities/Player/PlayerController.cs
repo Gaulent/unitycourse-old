@@ -5,7 +5,9 @@ public class PlayerController : MonoBehaviour {
 
 	public float speed = 8f;
 	public float padding = 1f;
-
+	public GameObject laserPrefab;
+	public float laserSpeed = 10f;
+	public float firingRate = 1f;
 	private float xmin,xmax;
 	
 
@@ -25,6 +27,10 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 	
+	void Fire() {
+		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
+		laser.rigidbody2D.velocity = new Vector3(0,laserSpeed,0);
+	}
 	
 	void Update () {
 	
@@ -35,6 +41,13 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (Input.GetKey(KeyCode.RightArrow)) {
 			transform.position += Vector3.right * speed * Time.deltaTime;
+		}
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			// Hay un bug que se produce al meter 0.0f ahi
+			InvokeRepeating("Fire", 0.000001f, firingRate);
+		}
+		if (Input.GetKeyUp(KeyCode.Space)) {
+			CancelInvoke("Fire");
 		}
 		
 		float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
