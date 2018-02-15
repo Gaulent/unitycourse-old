@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject laserPrefab;
 	public float laserSpeed = 10f;
 	public float firingRate = 1f;
+	public float health = 250f;
 	private float xmin,xmax;
 	
 
@@ -53,5 +54,16 @@ public class PlayerController : MonoBehaviour {
 		float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 		
+	}
+	
+	void OnTriggerEnter2D (Collider2D col) {
+		Laser projectile = col.gameObject.GetComponent<Laser>();
+		if(projectile && !projectile.getFriendly()) {
+			health -= projectile.GetDamage();
+			Debug.Log ("Player hit.");
+			projectile.Hit();
+			if(health<=0)
+				Destroy (gameObject);
+		}
 	}
 }
