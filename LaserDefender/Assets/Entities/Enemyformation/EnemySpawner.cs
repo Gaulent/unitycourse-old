@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour {
 	public float width = 10f;
 	public float height = 5f;
 	public float speed = 1f;
+	public float spawnDelay = 0.5f;
 
 	private float xmin,xmax;
 	private bool movingRight = true;
@@ -15,12 +16,8 @@ public class EnemySpawner : MonoBehaviour {
 	void Start () {
 		// La salida de Instantiate develve un Object, lo parseamos a GameObject
 		
-		foreach(Transform child in transform) {
-			GameObject enemy = Instantiate(enemyPrefab, child.position, Quaternion.identity) as GameObject;
-
-			// Pone el objeto creado bajo este en la jerarquia
-			enemy.transform.parent = child;
-		}
+		//SpawnAllEnemies();
+		SpawnUntilFull();
 		
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		
@@ -51,5 +48,50 @@ public class EnemySpawner : MonoBehaviour {
 		if (rightEdgeOfFormation >= xmax)
 			movingRight=false;
 		
+		
+		if(AllMembersDead()) {
+			Debug.Log("Empty Formation");
+			//SpawnAllEnemies();
+			SpawnUntilFull();
+		}
+	}
+	
+	void SpawnUntilFull() {
+		Transform freePosition = NextFreePosition();
+		if (freePosition) {
+			GameObject enemy = Instantiate(enemyPrefab, freePosition.position, Quaternion.identity) as GameObject;
+			enemy.transform.parent = freePosition;
+		}
+		if (NextFreePosition())
+			Invoke ("SpawnUntilFull", spawnDelay);
+	}
+	
+	
+	void SpawnAllEnemies() {
+	
+		foreach(Transform child in transform) {
+			GameObject enemy = Instantiate(enemyPrefab, child.position, Quaternion.identity) as GameObject;
+			
+			// Pone el objeto creado bajo este en la jerarquia
+			enemy.transform.parent = child;
+		}
+	}
+	
+	bool AllMembersDead() {
+	
+		foreach(Transform child in transform) {
+			if(child.childCount>0) return false;
+		}
+
+		return true;
+	}
+	
+	Transform NextFreePosition() {
+		
+		foreach(Transform child in transform) {
+			if(child.childCount == 0) return child;
+		}
+		
+		return null;
 	}
 }

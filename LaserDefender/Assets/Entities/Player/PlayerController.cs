@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnTriggerEnter2D (Collider2D col) {
 		Laser projectile = col.gameObject.GetComponent<Laser>();
-		if(projectile && !projectile.getFriendly()) {
+		if(projectile) {
 			health -= projectile.GetDamage();
 			Debug.Log ("Player hit.");
 			projectile.Hit();
