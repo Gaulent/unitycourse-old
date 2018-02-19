@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
 	public float firingRate = 1f;
 	public float health = 250f;
 	private float xmin,xmax;
+	public AudioClip shoot_sfx;
+	//private LevelManager lvlManager;
 	
 
 
@@ -26,11 +28,13 @@ public class PlayerController : MonoBehaviour {
 		xmin = leftmost.x + padding;
 		xmax = rightmost.x - padding;
 		
+		//lvlManager = FindObjectOfType<LevelManager>();
 	}
 	
 	void Fire() {
 		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		laser.rigidbody2D.velocity = new Vector3(0,laserSpeed,0);
+		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
 	
 	void Update () {
@@ -62,8 +66,12 @@ public class PlayerController : MonoBehaviour {
 			health -= projectile.GetDamage();
 			Debug.Log ("Player hit.");
 			projectile.Hit();
-			if(health<=0)
+			if(health<=0) {
 				Destroy (gameObject);
+				//lvlManager.LoadNextLevel();
+				LevelManager man = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+				man.LoadNextLevel();
+			}
 		}
 	}
 }

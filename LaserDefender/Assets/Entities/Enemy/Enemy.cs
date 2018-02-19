@@ -7,6 +7,14 @@ public class Enemy : MonoBehaviour {
 	public GameObject laserPrefab;
 	public float laserSpeed = 10f;
 	public float firingRate = 0.5f; // Shots per Second
+	public int scoreValue = 150;
+	ScoreKeeper score;
+	public AudioClip shoot_sfx;
+	public AudioClip destroyed_sfx;
+	
+	void Start () {
+		score = FindObjectOfType<ScoreKeeper>();
+	}
 	
 	void OnTriggerEnter2D (Collider2D col) {
 		Laser projectile = col.gameObject.GetComponent<Laser>();
@@ -14,8 +22,11 @@ public class Enemy : MonoBehaviour {
 			health -= projectile.GetDamage();
 			Debug.Log ("Enemy hit.");
 			projectile.Hit();
-			if(health<=0)
+			if(health<=0) {
 				Destroy (gameObject);
+				score.Score(scoreValue);
+				AudioSource.PlayClipAtPoint(destroyed_sfx, transform.position, 1f);
+			}
 		}
 	}
 	
@@ -33,6 +44,7 @@ public class Enemy : MonoBehaviour {
 	void Fire() {
 		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		laser.rigidbody2D.velocity = new Vector3(0,-laserSpeed,0);
+		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
 	/*
 	void Start() {
