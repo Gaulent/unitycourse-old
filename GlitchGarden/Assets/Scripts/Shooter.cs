@@ -37,7 +37,7 @@ public class Shooter : MonoBehaviour {
 	}
 	
 	private void FireGun() {
-		GameObject newProjectile = Instantiate (projectile, transform.FindChild("Gun").position, Quaternion.identity) as GameObject;
+		GameObject newProjectile = Instantiate (projectile, transform.Find("Gun").position, Quaternion.identity) as GameObject;
 		newProjectile.transform.parent = projectileParent.transform;
 	}
 	
