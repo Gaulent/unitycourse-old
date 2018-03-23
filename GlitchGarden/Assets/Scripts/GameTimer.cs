@@ -8,7 +8,7 @@ public class GameTimer : MonoBehaviour {
 	private float timeStart;
 	private Slider slider;
 	private LevelManager levelManager;
-	private AudioSource audio;
+	private AudioSource audioSource;
 	private GameObject winLabel;
 	private bool gameWon;
 
@@ -17,7 +17,7 @@ public class GameTimer : MonoBehaviour {
 		slider = GetComponent<Slider>();
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
 		timeStart = Time.time;
-		audio = GetComponent<AudioSource>();
+		audioSource = GetComponent<AudioSource>();
 		gameWon = false;
 		winLabel = GameObject.Find("You Win");
 		winLabel.SetActive(false);
@@ -29,8 +29,8 @@ public class GameTimer : MonoBehaviour {
 		if ((Time.time-timeStart)/timeRemaining >= 1 && ! gameWon) {
 			gameWon = true;
 			winLabel.SetActive(true);
-			audio.Play();
-			Invoke ("LoadNextLevel", audio.clip.length); //Clever
+			audioSource.Play();
+			Invoke ("LoadNextLevel", audioSource.clip.length); //Clever
 		}
 	}
 	
