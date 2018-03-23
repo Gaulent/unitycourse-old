@@ -37,6 +37,8 @@ public class Attacker : MonoBehaviour {
 			Health targetHealth = target.GetComponent<Health>();
 			if(targetHealth)
 				targetHealth.DealDamage(50);
+			if(target.GetComponent<Animator>() && target.GetComponent<Stone>())
+				target.GetComponent<Animator>().SetTrigger("underAttack");
 		}
 	}
 	
