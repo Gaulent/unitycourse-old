@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4711596881302278}
   - component: {fileID: 54235456350243616}
+  - component: {fileID: 114480492553113234}
   m_Layer: 0
   m_Name: Bowling Pin
   m_TagString: Untagged
@@ -180,3 +181,15 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: 488085db3bbafa84a9cfd42a2f28e885, type: 3}
+--- !u!114 &114480492553113234
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1864583475111912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2bffea7538d93046934c746d1b1e729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standingThreshold: 0.25
