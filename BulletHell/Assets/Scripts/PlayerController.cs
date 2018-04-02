@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
 	public float laserSpeed = 10f;
 	public float firingRate = 1f;
 	public float health = 250f;
+	public enum Element {ICE, FIRE};
+	public Element currentElement = Element.ICE;
 	private float xmin,xmax,ymin,ymax;
 	public Sprite fireSprite;
 	public Sprite iceSprite;
@@ -25,8 +27,8 @@ public class PlayerController : MonoBehaviour {
 	
 		anim = GetComponent<Animator>();
 		spriteR = GetComponent<SpriteRenderer>();
-		spriteR.sprite = iceSprite;
-	
+		SetElementSprite(currentElement);
+
 		float distance = transform.position.z - Camera.main.transform.position.z;
 	
 		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0.26f,0f,distance));
@@ -36,16 +38,25 @@ public class PlayerController : MonoBehaviour {
 		xmax = rightmost.x - padding;
 		ymin = leftmost.y + padding;
 		ymax = rightmost.y - padding;
-		ChangeToFire();
 		//lvlManager = FindObjectOfType<LevelManager>();
 	}
 	
 	void Fire() {
 		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		laser.GetComponent<Rigidbody2D>().velocity = new Vector3(0,laserSpeed,0);
+		laser.GetComponent<SpriteRenderer>().color = GetColor();
 		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
-	
+
+	void SetElementSprite(Element element) {
+		if(element == Element.ICE)
+			spriteR.sprite = iceSprite;
+		else if (element == Element.FIRE)
+			spriteR.sprite = fireSprite;
+		else
+			Debug.LogWarning("Trying to assign invalid element.");
+	}
+
 	void Update () {
 	
 		// Time.deltaTime es el tiempo entre frames. Haciendolo independiente del framerate.
@@ -95,8 +106,15 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
-	void ChangeToFire() {
-		print("Called");
-		spriteR.sprite = fireSprite;
+	public void MorphElement() {
+		if (currentElement==Element.FIRE) currentElement=Element.ICE;
+		else if (currentElement==Element.ICE) currentElement=Element.FIRE;
+		SetElementSprite(currentElement);
+	}
+
+	Color GetColor() {
+		if (currentElement==Element.FIRE) return Color.red;
+		else if (currentElement==Element.ICE) return Color.cyan;
+		return Color.black;
 	}
 }

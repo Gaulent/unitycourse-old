@@ -44,6 +44,7 @@ public class Enemy : MonoBehaviour {
 	void Fire() {
 		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		laser.GetComponent<Rigidbody2D>().velocity = new Vector3(0,-laserSpeed,0);
+		laser.GetComponent<SpriteRenderer>().color = Color.cyan;
 		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
 	/*
