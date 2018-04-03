@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip shoot_sfx;
 	private Animator anim;
 	private SpriteRenderer spriteR;
+	private Gun[] guns;
 	
 
 
@@ -24,16 +25,18 @@ public class PlayerController : MonoBehaviour {
 	
 		// ViewportToWorldPoint devuelve puntos en el espacio en referencia a la camara
 		// En este caso la camara Camera.main
-	
+		guns = GetComponentsInChildren<Gun>();
 		anim = GetComponent<Animator>();
 		spriteR = GetComponent<SpriteRenderer>();
 		SetElementSprite(currentElement);
 
 		float distance = transform.position.z - Camera.main.transform.position.z;
 	
-		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0.26f,0f,distance));
-		Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1f-0.26f,1f,distance));
-		
+		//Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0.26f,0f,distance));
+		//Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1f-0.26f,1f,distance));
+		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0f,0f,distance));
+		Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1f,1f,distance));
+
 		xmin = leftmost.x + padding;
 		xmax = rightmost.x - padding;
 		ymin = leftmost.y + padding;
@@ -42,9 +45,12 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Fire() {
-		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
-		laser.GetComponent<Rigidbody2D>().velocity = new Vector3(0,laserSpeed,0);
-		laser.GetComponent<SpriteRenderer>().color = GetColor();
+
+		foreach(Gun gun in guns) {
+			GameObject laser = Instantiate(laserPrefab, gun.transform.position, gun.transform.rotation) as GameObject;
+			laser.GetComponent<Rigidbody2D>().velocity = gun.aim*laserSpeed;
+			laser.GetComponent<SpriteRenderer>().color = GetColor();
+		}
 		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
 

@@ -11,9 +11,11 @@ public class Enemy : MonoBehaviour {
 	ScoreKeeper score;
 	public AudioClip shoot_sfx;
 	public AudioClip destroyed_sfx;
+	private Gun[] guns;
 	
 	void Start () {
 		score = FindObjectOfType<ScoreKeeper>();
+		guns = GetComponentsInChildren<Gun>();
 	}
 	
 	void OnTriggerEnter2D (Collider2D col) {
@@ -40,17 +42,16 @@ public class Enemy : MonoBehaviour {
 			Fire ();
 		}
 	}
-	
+
 	void Fire() {
-		GameObject laser = Instantiate(laserPrefab, transform.position, Quaternion.identity) as GameObject;
-		laser.GetComponent<Rigidbody2D>().velocity = new Vector3(0,-laserSpeed,0);
-		laser.GetComponent<SpriteRenderer>().color = Color.cyan;
+
+		foreach(Gun gun in guns) {
+			GameObject laser = Instantiate(laserPrefab, gun.transform.position, gun.transform.rotation) as GameObject;
+
+			laser.GetComponent<Rigidbody2D>().velocity = gun.aim*laserSpeed;
+			laser.GetComponent<SpriteRenderer>().color = Color.cyan;
+		}
 		AudioSource.PlayClipAtPoint(shoot_sfx, transform.position, 0.02f);
 	}
-	/*
-	void Start() {
-		InvokeRepeating("Fire", 0.000001f, firingRate*Time.deltaTime*Random.value);
-		//Debug.Log(Time.deltaTime);
-		//Debug.Log();
-	}*/
+
 }
