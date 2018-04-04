@@ -5,7 +5,7 @@ public class Gun : MonoBehaviour {
 
 	public Vector3 aim;
 
-	void Start() {
+	void Update() {
 		//print(name + Mathf.Cos(transform.rotation.eulerAngles.z) + "  " + Mathf.Sin(transform.rotation.eulerAngles.z));
 		float tempAngle = (((180-transform.rotation.eulerAngles.z+360)%360)*Mathf.PI)/180;
 		aim = new Vector3(Mathf.Sin(tempAngle), Mathf.Cos(tempAngle),0);
