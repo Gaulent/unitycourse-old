@@ -1,23 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using UnityEngine;
+using UnityEditor;
+using UnityEngine.TestTools;
 using NUnit.Framework;
-using UnityEngine;
+using System.Collections;
 using System.Linq;
 
 [TestFixture]
-public class ScoreMasterTest {
+public class ActionMasterTest {
+	
+	// Lo que se ponga aqui se lanza siempre al inicio de las pruebas.
+	// Es como el start para las pruebas unitarias.
+	
+	[SetUp]
+	public void Setup () {
+		ActionMaster.ResetActionMaster();
+	}
 	
 	[Test]
 	public void T00PassingTest () {
 		Assert.AreEqual (1, 1);
 	}
+	
+	[Test]
+	public void T01OneStrikeReturnsEndTurn () {
+		Assert.AreEqual (ActionMaster.Action.EndTurn, ActionMaster.Bowl(10));
+	}
 
+	[Test]
+	public void T02Bowl8ReturnsTidy () {
+		Assert.AreEqual (ActionMaster.Action.Tidy, ActionMaster.Bowl(8));
+	}
+	
+	[Test]
+	public void T03Bowl28SpareReturnsEndTurn () {
+		ActionMaster.Bowl(8);
+		Assert.AreEqual (ActionMaster.Action.EndTurn, ActionMaster.Bowl(2));
+	}
+
+	[Test]
+	public void T04CheckResetAtStrikeInLastFrame () {
+		ActionMaster.ResetActionMaster();
+		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		ActionMaster.Bowl(1);
+		Assert.AreEqual (ActionMaster.Action.Reset, ActionMaster.Bowl(10));
+	}
+	
+			
+	/*
 	[Test]
 	public void T01Bowl23 () {
 		int[] rolls = {2,3};
 		int[] frames = { 5};
-		Assert.AreEqual (frames.ToList(), ScoreMaster.ScoreFrames (rolls.ToList()));
+		Assert.AreEqual (frames.ToList(), ActionMaster.ScoreFrames (rolls.ToList()));
 	}
+	*/
 //
 //	[Test]
 //	public void T02Bowl234 () {

@@ -6,11 +6,11 @@ public class Pin : MonoBehaviour {
 
 	[Range(0f,1f)]
 	public float standingThreshold = 0.25f;
-	private Rigidbody rigidbody;
+	private Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
-		rigidbody = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -26,12 +26,12 @@ public class Pin : MonoBehaviour {
 	
 	public void RaisePin(float distanceToRaise) {
 		transform.Translate(Vector3.up*distanceToRaise);
-		rigidbody.useGravity = false;
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
+		rb.useGravity = false;
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
 	}
 	
 	public void LowerPin() {
-		rigidbody.useGravity = true;
+		rb.useGravity = true;
 	}
 }
