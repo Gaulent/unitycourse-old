@@ -39,7 +39,6 @@ public class ActionMasterTest {
 
 	[Test]
 	public void T04CheckResetAtStrikeInLastFrame () {
-		ActionMaster.ResetActionMaster();
 		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 		foreach(int roll in rolls) {
 			ActionMaster.Bowl(roll);
@@ -47,8 +46,53 @@ public class ActionMasterTest {
 		ActionMaster.Bowl(1);
 		Assert.AreEqual (ActionMaster.Action.Reset, ActionMaster.Bowl(10));
 	}
+
+	[Test]
+	public void T05CheckResetAtStrikeInLastFrame () {
+		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		ActionMaster.Bowl(1);
+		Assert.AreEqual (ActionMaster.Action.Reset, ActionMaster.Bowl(9));
+	}	
 	
-			
+	[Test]
+	public void T06YouTubeRollsEndInEndGame () {
+		int[] rolls = {8,2,7,3,3,4,10,2,8,10,10,8,0,10,8,2};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		Assert.AreEqual (ActionMaster.Action.EndGame, ActionMaster.Bowl(9));
+	}	
+	
+	[Test]
+	public void T07GameEndsAtBowl20 () {
+		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		Assert.AreEqual (ActionMaster.Action.EndGame, ActionMaster.Bowl(1));
+	}	
+
+	[Test]
+	public void T08DarylBowl20Test () {
+		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		Assert.AreEqual (ActionMaster.Action.Tidy, ActionMaster.Bowl(5));
+	}	
+
+	[Test]
+	public void T09BensBowl20Test () {
+		int[] rolls = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10};
+		foreach(int roll in rolls) {
+			ActionMaster.Bowl(roll);
+		}
+		Assert.AreEqual (ActionMaster.Action.Tidy, ActionMaster.Bowl(0));
+	}	
+	
 	/*
 	[Test]
 	public void T01Bowl23 () {

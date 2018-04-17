@@ -51,12 +51,20 @@ public static class ActionMaster {
 	public static Action Bowl (int pins) {
 	
 		if (pins < 0 || pins > 10) throw new UnityException("Invalid pins!");
-		
+
 		bowls [bowl - 1] = pins;
 		
-		if (pins >= 19 && Bowl21Awarded()) {
+		if (bowl == 21) {
+			return Action.EndGame;
+		}
+		if (bowl == 20 && bowls[19-1] == 10) {
+			return Action.Tidy;
+		}
+		if (bowl >= 19 && Bowl21Awarded()) {
 			bowl += 1;
 			return Action.Reset;
+		} else if (bowl == 20 && !Bowl21Awarded()) {
+			return Action.EndGame;
 		}
 		if (pins == 10) {
 			bowl += 2;
@@ -73,6 +81,8 @@ public static class ActionMaster {
 			
 		throw new UnityException("Not sure what action to return!");
 		//return Action.Undefined;
+		
+		
 	}
 	
 	public static bool Bowl21Awarded() {
