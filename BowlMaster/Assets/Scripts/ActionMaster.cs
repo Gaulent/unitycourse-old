@@ -57,21 +57,28 @@ public static class ActionMaster {
 		if (bowl == 21) {
 			return Action.EndGame;
 		}
-		if (bowl == 20 && bowls[19-1] == 10) {
-			return Action.Tidy;
-		}
-		if (bowl >= 19 && Bowl21Awarded()) {
-			bowl += 1;
+
+		if(bowl >= 19 && pins == 10) {
+			bowl++;
 			return Action.Reset;
-		} else if (bowl == 20 && !Bowl21Awarded()) {
-			return Action.EndGame;
-		}
-		if (pins == 10) {
-			bowl += 2;
-			return Action.EndTurn;
+		} else if(bowl == 20) {
+			bowl++;
+			if(bowls[19-1]==10 && bowls[20-1]==0) {
+				return Action.Tidy;
+			} else if (bowls[19-1] + bowls[20-1] == 10) {
+				return Action.Reset;
+			} else if (Bowl21Awarded()) {
+				return Action.Tidy;
+			} else {
+				return Action.EndGame;
+			}
 		}
 		
 		if (bowl % 2 != 0) {
+			if (pins == 10) {
+				bowl += 2;
+				return Action.EndTurn;
+			}
 			bowl += 1;
 			return Action.Tidy;
 		} else if (bowl % 2 == 0) {

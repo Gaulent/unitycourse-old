@@ -11,12 +11,15 @@ public class PinSetter : MonoBehaviour {
 	public GameObject pinsPrefab;
 	
 	private Ball ball;
+	private int lastSettledCount;
 	private float lastChangeTime;
 	private bool ballEnteredBox = false;
+	private Animator anim;
 
 	// Use this for initialization
 	void Start () {
 		ball = GameObject.FindObjectOfType<Ball>();
+		anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -70,14 +73,12 @@ public class PinSetter : MonoBehaviour {
 		GameObject go = col.gameObject;
 		if (go.GetComponent<Ball>()) {
 			standingDisplay.color = Color.red;
-			print("Ball Entered");
 			ballEnteredBox = true;
 		}
 	}
 
 	void OnTriggerExit(Collider col) {
 		GameObject go = col.gameObject;
-		print("Something");
 		if (go.GetComponentInParent<Pin>()) {
 			Destroy(go.transform.parent.gameObject);
 		}
@@ -96,6 +97,21 @@ public class PinSetter : MonoBehaviour {
 	}
 	
 	void PinsHaveSettled() {
+		int pinFall = lastSettledCount - CountStanding();
+		lastSettledCount = CountStanding();
+		
+		ActionMaster.Action thisAction = ActionMaster.Bowl(pinFall);
+		print (thisAction);
+		if(thisAction==ActionMaster.Action.EndTurn) {
+			anim.SetTrigger("resetTrigger");
+		} else if(thisAction==ActionMaster.Action.Tidy) {
+			anim.SetTrigger("tidyTrigger");
+		}
+		
+		
+		
+		
+		
 		standingDisplay.color = Color.green;
 		lastStandingCount = -1;
 		ballEnteredBox = false;
