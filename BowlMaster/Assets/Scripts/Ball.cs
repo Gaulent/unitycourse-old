@@ -16,15 +16,17 @@ public class Ball : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody>();
 		ballSound = GetComponent<AudioSource>();
 		rigidBody.useGravity = false;
-		Launch(new Vector3(0,1, 1500));
+		Launch(new Vector3(0,2, 1600));
 		initialPosition = transform.position;
 	}
 
 	public void Launch (Vector3 velocity) {
-		rigidBody.velocity = velocity;
-		rigidBody.useGravity = true;
-		ballSound.Play ();
-		gameStarted = true;
+		if(!gameStarted) {
+			rigidBody.velocity = velocity;
+			rigidBody.useGravity = true;
+			ballSound.Play ();
+			gameStarted = true;
+		}
 	}
 
 	public void MoveStart(float xNudge) {
@@ -37,6 +39,7 @@ public class Ball : MonoBehaviour {
 
 	public void Reset() {
 		transform.position = initialPosition;
+		transform.rotation = Quaternion.identity;
 		gameStarted = false;
 		rigidBody.useGravity = false;
 		rigidBody.velocity = Vector3.zero;

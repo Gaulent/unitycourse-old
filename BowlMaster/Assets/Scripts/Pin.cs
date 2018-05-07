@@ -29,6 +29,7 @@ public class Pin : MonoBehaviour {
 		rb.useGravity = false;
 		rb.velocity = Vector3.zero;
 		rb.angularVelocity = Vector3.zero;
+		transform.rotation = Quaternion.Euler(0f,0f,0f);
 	}
 	
 	public void LowerPin() {

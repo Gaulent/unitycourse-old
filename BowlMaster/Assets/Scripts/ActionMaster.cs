@@ -9,46 +9,24 @@ public static class ActionMaster {
 	private static int[] bowls = new int[21];
 	private static int bowl = 1;
 	
-	public static void ResetActionMaster () {
+	private static void ResetActionMaster () {
 		bowl = 1;
 		bowls = new int[21];
 	}
 	
 	public static Action NextAction (List<int> rolls) {
-		Action nextAction = Action.Undefined;
+
+		Action result = Action.Undefined;
+		ResetActionMaster();
 		
-		for (int i = 0; i < rolls.Count; i++) { // Step through rolls
-			
-			if (i == 20) {
-				nextAction = Action.EndGame;
-			} else if ( i >= 18 && rolls[i] == 10 ){ // Handle last-frame special cases
-				nextAction = Action.Reset;
-			} else if ( i == 19 ) {
-				if (rolls[18]==10 && rolls[19]==0) {
-					nextAction = Action.Tidy;
-				} else if (rolls[18] + rolls[19] == 10) {
-					nextAction = Action.Reset;
-				} else if (rolls [18] + rolls[19] >= 10) {  // Roll 21 awarded
-					nextAction = Action.Tidy;
-				} else {
-					nextAction = Action.EndGame;
-				}
-			} else if (i % 2 == 0) { // First bowl of frame
-				if (rolls[i] == 10) {
-					rolls.Insert (i, 0); // Insert virtual 0 after strike
-					nextAction = Action.EndTurn;
-				} else {
-					nextAction = Action.Tidy;
-				}
-			} else { // Second bowl of frame
-				nextAction = Action.EndTurn;
-			}
+		foreach (int roll in rolls) {
+			result = Bowl(roll);
 		}
 		
-		return nextAction;
+		return result;
 	}
 
-	public static Action Bowl (int pins) {
+	private static Action Bowl (int pins) {
 	
 		if (pins < 0 || pins > 10) throw new UnityException("Invalid pins!");
 
@@ -92,11 +70,11 @@ public static class ActionMaster {
 		
 	}
 	
-	public static bool Bowl21Awarded() {
+	private static bool Bowl21Awarded() {
 		return (bowls[19-1]+bowls[20-1] >= 10);
 	}
 
-	public static double ScoreFrames(List<int> n) {
+	private static double ScoreFrames(List<int> n) {
 		return 0;
 	}
 }
