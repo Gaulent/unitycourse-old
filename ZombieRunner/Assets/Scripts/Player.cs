@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+	public GameObject flare;
+	
 	private GameObject[] spawnPoints;
-	public Helicopter helicopter;
 	public bool spawn = false;
 
 	// Use this for initialization
@@ -27,8 +28,11 @@ public class Player : MonoBehaviour {
 	}
 	
 	void OnFindClearArea() {
-		Debug.Log("Found Clear Area");
-		helicopter.Call();
+		Invoke ("DropFlare", 3f);
+	}
+	
+	void DropFlare() {
+		Instantiate(flare, transform.position,transform.rotation);
 	}
 }
 
