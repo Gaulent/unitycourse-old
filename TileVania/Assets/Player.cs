@@ -12,29 +12,36 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D rb;
 	private SpriteRenderer sr;
 	private Animator anim;
-	private Collider2D col;
+	private CapsuleCollider2D col;
+	private BoxCollider2D colFeet;
 	private float gravityScale;
+	private bool isAlive = true;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
 		sr = GetComponent<SpriteRenderer>();
 		anim = GetComponent<Animator>();
-		col = GetComponent<Collider2D>();
+		col = GetComponent<CapsuleCollider2D>();
+		colFeet = GetComponent<BoxCollider2D>();
+		print (colFeet.gameObject);
 		gravityScale = rb.gravityScale;
 		
 	}
 	
 	void Update () {
 
-		Run();
-		Jump();
-		Climb();
+		if(isAlive) {
+			Run();
+			Jump();
+			Climb();
+			Die ();
+		}
 	}
 
 	void Jump () {
 
-		if(CrossPlatformInputManager.GetButtonDown("Jump") && col.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
+		if(CrossPlatformInputManager.GetButtonDown("Jump") && colFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
 			rb.velocity+=(new Vector2(0,jumpPotency));
 		}
 	}
@@ -54,6 +61,17 @@ public class Player : MonoBehaviour {
 			rb.gravityScale = gravityScale;
 		}
 		
+	}
+	
+	void Die() {
+		if(col.IsTouchingLayers(LayerMask.GetMask("Enemy")) || col.IsTouchingLayers(LayerMask.GetMask("Hazard"))) {
+			isAlive=false;
+			anim.SetTrigger("dies");
+			rb.velocity = new Vector2(10f,10f);
+		}
+		
+		
+	
 	}
 	
 	void Run () {

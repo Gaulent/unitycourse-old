@@ -15,8 +15,8 @@ TagManager:
   - 
   - Ground
   - Ladder
-  - 
-  - 
+  - Enemy
+  - Hazard
   - 
   - 
   - 
@@ -47,9 +47,15 @@ TagManager:
   - name: Ladder
     uniqueID: 771701129
     locked: 0
+  - name: Enemy
+    uniqueID: 4040114259
+    locked: 0
   - name: Player
     uniqueID: 1612119661
     locked: 0
   - name: Foreground
     uniqueID: 3371916967
+    locked: 0
+  - name: Hazards
+    uniqueID: 3908691859
     locked: 0
