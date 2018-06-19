@@ -64,7 +64,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	void Die() {
-		if(col.IsTouchingLayers(LayerMask.GetMask("Enemy")) || col.IsTouchingLayers(LayerMask.GetMask("Hazard"))) {
+		if(col.IsTouchingLayers(LayerMask.GetMask("Enemy","Hazard"))) {
 			isAlive=false;
 			anim.SetTrigger("dies");
 			rb.velocity = new Vector2(10f,10f);
