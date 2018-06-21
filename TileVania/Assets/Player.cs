@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
 	private BoxCollider2D colFeet;
 	private float gravityScale;
 	private bool isAlive = true;
+	private GameSession session;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour {
 		colFeet = GetComponent<BoxCollider2D>();
 		print (colFeet.gameObject);
 		gravityScale = rb.gravityScale;
+		session = FindObjectOfType<GameSession>();
 		
 	}
 	
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour {
 			isAlive=false;
 			anim.SetTrigger("dies");
 			rb.velocity = new Vector2(10f,10f);
+			session.PlayerDeath();
 		}
 		
 		
